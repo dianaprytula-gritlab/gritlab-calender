@@ -95,7 +95,9 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
                 <span className={`text-sm font-medium ${
                   isToday
                     ? "size-7 rounded-full bg-primary text-primary-foreground grid place-items-center"
-                    : inMonth ? "text-foreground" : "text-muted-foreground/50"
+                    : !inMonth ? "text-muted-foreground/40"
+                    : dayEvents.length === 0 ? "text-muted-foreground/50"
+                    : "text-foreground"
                 }`}>{day.getDate()}</span>
               </div>
               <div className="flex flex-col gap-1 overflow-hidden">
