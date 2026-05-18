@@ -20,7 +20,27 @@ const ALL_CATS = Object.keys(CATEGORIES) as CategoryKey[];
 
 function Index() {
   const [active, setActive] = useState<Set<CategoryKey>>(new Set(ALL_CATS));
-  const [view, setView] = useState<"month" | "agenda">("month");
+  const [view, setView] = useState<"month" | "agenda">(() => {
+    if (typeof window !== "undefined" && window.location.hash.toLowerCase() === "#agenda") return "agenda";
+    return "month";
+  });
+
+  useEffect(() => {
+    const onHash = () => {
+      setView(window.location.hash.toLowerCase() === "#agenda" ? "agenda" : "month");
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const setViewAndHash = (v: "month" | "agenda") => {
+    setView(v);
+    const newHash = v === "agenda" ? "#Agenda" : "";
+    if (typeof window !== "undefined") {
+      const url = window.location.pathname + window.location.search + newHash;
+      window.history.replaceState(null, "", url);
+    }
+  };
 
   const toggle = (k: CategoryKey) => {
     setActive(prev => {
