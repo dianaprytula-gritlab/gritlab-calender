@@ -76,7 +76,7 @@ function Index() {
             {(["month","agenda"] as const).map(v => (
               <button
                 key={v}
-                onClick={() => setView(v)}
+                onClick={() => setViewAndHash(v)}
                 className={`px-4 py-1.5 text-sm font-medium rounded-full transition ${
                   view === v ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}
