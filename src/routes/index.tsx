@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CATEGORIES, EVENTS, formatTimeRange, type CategoryKey } from "@/lib/events";
 import { CategoryChip, toneFor } from "@/components/calendar/category";
 import { AgendaView, MonthView } from "@/components/calendar/views";
@@ -20,7 +20,27 @@ const ALL_CATS = Object.keys(CATEGORIES) as CategoryKey[];
 
 function Index() {
   const [active, setActive] = useState<Set<CategoryKey>>(new Set(ALL_CATS));
-  const [view, setView] = useState<"month" | "agenda">("month");
+  const [view, setView] = useState<"month" | "agenda">(() => {
+    if (typeof window !== "undefined" && window.location.hash.toLowerCase() === "#agenda") return "agenda";
+    return "month";
+  });
+
+  useEffect(() => {
+    const onHash = () => {
+      setView(window.location.hash.toLowerCase() === "#agenda" ? "agenda" : "month");
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const setViewAndHash = (v: "month" | "agenda") => {
+    setView(v);
+    const newHash = v === "agenda" ? "#Agenda" : "";
+    if (typeof window !== "undefined") {
+      const url = window.location.pathname + window.location.search + newHash;
+      window.history.replaceState(null, "", url);
+    }
+  };
 
   const toggle = (k: CategoryKey) => {
     setActive(prev => {
@@ -56,7 +76,7 @@ function Index() {
             {(["month","agenda"] as const).map(v => (
               <button
                 key={v}
-                onClick={() => setView(v)}
+                onClick={() => setViewAndHash(v)}
                 className={`px-4 py-1.5 text-sm font-medium rounded-full transition ${
                   view === v ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}

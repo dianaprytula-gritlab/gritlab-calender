@@ -74,16 +74,20 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
         ))}
       </div>
 
-      <div className="grid grid-cols-7 grid-rows-6">
+      <div className="grid grid-cols-7">
         {cells.map((day, i) => {
           const inMonth = day.getMonth() === month;
           const dayEvents = visibleEvents.filter(e => eventOccursOn(e, day));
           const isToday = sameDay(day, today);
+          const rowStart = Math.floor(i / 7) * 7;
+          const rowEmpty = cells.slice(rowStart, rowStart + 7).every(
+            d => visibleEvents.filter(e => eventOccursOn(e, d)).length === 0
+          );
 
           return (
             <div
               key={i}
-              className={`min-h-[120px] border-b border-r p-1.5 flex flex-col gap-1 ${
+              className={`${rowEmpty ? "min-h-[44px]" : "min-h-[120px]"} border-b border-r p-1.5 flex flex-col gap-1 ${
                 inMonth ? "bg-card" : "bg-muted/20"
               } ${(i+1) % 7 === 0 ? "border-r-0" : ""}`}
             >
