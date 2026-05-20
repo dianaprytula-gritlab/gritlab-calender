@@ -70,7 +70,7 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
           return (
             <div
               key={i}
-              className={`${rowEmpty ? "min-h-[44px]" : "min-h-[120px]"]} border-b border-r p-1.5 flex flex-col gap-1 ${
+              className={`${rowEmpty ? "min-h-[44px]" : "min-h-[120px]"} border-b border-r p-1.5 flex flex-col gap-1 ${
                 dayInRange ? "bg-card" : "bg-muted/10"
               } ${(i+1) % 7 === 0 ? "border-r-0" : ""}`}
             >
