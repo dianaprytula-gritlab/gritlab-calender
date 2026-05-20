@@ -5,12 +5,8 @@ import { EventDialog } from "./event-dialog";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function startOfMonthGrid(year: number, month: number) {
-  const first = new Date(year, month, 1);
-  const start = new Date(first);
-  start.setDate(first.getDate() - first.getDay());
-  return start;
-}
+const RANGE_START = new Date(2026, 4, 17); // May 17, 2026
+const RANGE_END = new Date(2026, 5, 3);   // June 3, 2026
 
 function sameDay(a: Date, b: Date) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -23,23 +19,26 @@ function eventOccursOn(e: CalEvent, day: Date) {
   return d.getTime() >= s.getTime() && d.getTime() <= en.getTime();
 }
 
-export function MonthView({ active }: { active: Set<CategoryKey> }) {
-  const [cursor, setCursor] = useState(new Date(2026, 4, 1)); // May 2026
-  const [selected, setSelected] = useState<CalEvent | null>(null);
+function inRange(day: Date) {
+  const d = new Date(day); d.setHours(0,0,0,0);
+  const rs = new Date(RANGE_START); rs.setHours(0,0,0,0);
+  const re = new Date(RANGE_END); re.setHours(0,0,0,0);
+  return d.getTime() >= rs.getTime() && d.getTime() <= re.getTime();
+}
 
-  const year = cursor.getFullYear();
-  const month = cursor.getMonth();
-  const gridStart = useMemo(() => startOfMonthGrid(year, month), [year, month]);
+export function MonthView({ active }: { active: Set<CategoryKey> }) {
+  const [selected, setSelected] = useState<CalEvent | null>(null);
 
   const cells = useMemo(() => {
     const arr: Date[] = [];
-    for (let i = 0; i < 42; i++) {
-      const d = new Date(gridStart);
-      d.setDate(gridStart.getDate() + i);
+    const start = new Date(2026, 4, 17); // May 17
+    for (let i = 0; i < 21; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
       arr.push(d);
     }
     return arr;
-  }, [gridStart]);
+  }, []);
 
   const visibleEvents = useMemo(() => EVENTS.filter(e => active.has(e.category)), [active]);
   const today = new Date();
@@ -48,24 +47,8 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
     <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b bg-gradient-to-r from-background to-card">
         <h2 className="font-display text-2xl">
-          {cursor.toLocaleString("en", { month: "long" })} <span className="text-muted-foreground">{year}</span>
+          May 17 <span className="text-muted-foreground">–</span> Jun 3 <span className="text-muted-foreground">2026</span>
         </h2>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setCursor(new Date(year, month - 1, 1))}
-            className="size-9 rounded-full hover:bg-muted grid place-items-center text-lg"
-            aria-label="Previous month"
-          >‹</button>
-          <button
-            onClick={() => setCursor(new Date(today.getFullYear(), today.getMonth(), 1))}
-            className="px-3 h-9 rounded-full hover:bg-muted text-sm font-medium"
-          >Today</button>
-          <button
-            onClick={() => setCursor(new Date(year, month + 1, 1))}
-            className="size-9 rounded-full hover:bg-muted grid place-items-center text-lg"
-            aria-label="Next month"
-          >›</button>
-        </div>
       </div>
 
       <div className="grid grid-cols-7 border-b bg-muted/30">
@@ -76,29 +59,33 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
 
       <div className="grid grid-cols-7">
         {cells.map((day, i) => {
-          const inMonth = day.getMonth() === month;
-          const dayEvents = visibleEvents.filter(e => eventOccursOn(e, day));
+          const dayInRange = inRange(day);
+          const dayEvents = dayInRange ? visibleEvents.filter(e => eventOccursOn(e, day)) : [];
           const isToday = sameDay(day, today);
           const rowStart = Math.floor(i / 7) * 7;
           const rowEmpty = cells.slice(rowStart, rowStart + 7).every(
-            d => visibleEvents.filter(e => eventOccursOn(e, d)).length === 0
+            d => !inRange(d) || visibleEvents.filter(e => eventOccursOn(e, d)).length === 0
           );
 
           return (
             <div
               key={i}
-              className={`${rowEmpty ? "min-h-[44px]" : "min-h-[120px]"} border-b border-r p-1.5 flex flex-col gap-1 ${
-                inMonth ? "bg-card" : "bg-muted/20"
+              className={`${rowEmpty ? "min-h-[44px]" : "min-h-[120px]"]} border-b border-r p-1.5 flex flex-col gap-1 ${
+                dayInRange ? "bg-card" : "bg-muted/10"
               } ${(i+1) % 7 === 0 ? "border-r-0" : ""}`}
             >
               <div className="flex items-center justify-between px-1">
-                <span className={`text-sm font-medium ${
-                  isToday
-                    ? "size-7 rounded-full bg-primary text-primary-foreground grid place-items-center"
-                    : !inMonth ? "text-muted-foreground/40"
-                    : dayEvents.length === 0 ? "text-muted-foreground/50"
-                    : "text-foreground"
-                }`}>{day.getDate()}</span>
+                {dayInRange ? (
+                  <span className={`text-sm font-medium ${
+                    isToday
+                      ? "size-7 rounded-full bg-primary text-primary-foreground grid place-items-center"
+                      : dayEvents.length === 0
+                      ? "text-muted-foreground/50"
+                      : "text-foreground"
+                  }`}>{day.getDate()}</span>
+                ) : (
+                  <span className="text-sm text-transparent select-none">{day.getDate()}</span>
+                )}
               </div>
               <div className="flex flex-col gap-1 overflow-hidden">
                 {dayEvents.slice(0, 4).map(e => {
