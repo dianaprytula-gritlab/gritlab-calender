@@ -5,8 +5,8 @@ import { EventDialog } from "./event-dialog";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const RANGE_START = new Date(2026, 5, 21); // May 21, 2026
-const RANGE_END   = new Date(2026, 6, 3);  // June 3, 2026
+const RANGE_START = new Date(2026, 4, 21); // May 21, 2026
+const RANGE_END   = new Date(2026, 5, 3);  // June 3, 2026
 
 function sameDay(a: Date, b: Date) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -31,7 +31,7 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
 
   const cells = useMemo(() => {
     const arr: Date[] = [];
-    const start = new Date(2026, 5, 21); // May 21
+    const start = new Date(2026, 4, 21); // May 21
     for (let i = 0; i < 21; i++) {
       const d = new Date(start);
       d.setDate(start.getDate() + i);
