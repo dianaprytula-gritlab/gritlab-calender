@@ -5,8 +5,8 @@ import { EventDialog } from "./event-dialog";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const RANGE_START = new Date(2026, 4, 17); // May 17, 2026
-const RANGE_END = new Date(2026, 5, 3);   // June 3, 2026
+const RANGE_START = new Date(2026, 4, 21); // May 21, 2026
+const RANGE_END   = new Date(2026, 5, 3);  // June 3, 2026
 
 function sameDay(a: Date, b: Date) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -31,7 +31,7 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
 
   const cells = useMemo(() => {
     const arr: Date[] = [];
-    const start = new Date(2026, 4, 17); // May 17
+    const start = new Date(2026, 4, 21); // May 21
     for (let i = 0; i < 21; i++) {
       const d = new Date(start);
       d.setDate(start.getDate() + i);
@@ -47,7 +47,7 @@ export function MonthView({ active }: { active: Set<CategoryKey> }) {
     <div className="rounded-2xl border bg-card shadow-sm overflow-hidden">
       <div className="flex items-center justify-between px-5 py-4 border-b bg-gradient-to-r from-background to-card">
         <h2 className="font-display text-2xl">
-          May 17 <span className="text-muted-foreground">–</span> Jun 3 <span className="text-muted-foreground">2026</span>
+          May 21 <span className="text-muted-foreground">–</span> Jun 3 <span className="text-muted-foreground">2026</span>
         </h2>
       </div>
 

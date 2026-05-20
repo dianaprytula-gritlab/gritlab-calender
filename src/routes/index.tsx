@@ -149,9 +149,6 @@ function Index() {
           {view === "month" ? <MonthView active={active} /> : <AgendaView active={active} />}
         </section>
 
-        <footer className="text-center text-xs text-muted-foreground pt-8 pb-4">
-          Built with care · {EVENTS.length} events
-        </footer>
       </main>
     </div>
   );
