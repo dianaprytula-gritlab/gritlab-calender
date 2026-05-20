@@ -46,11 +46,6 @@ const d = (date: string, time = "00:00") => `${date}T${time}:00`;
 
 export const EVENTS: CalEvent[] = [
   // Week May 17–23, 2026
-  { id: "raid-quad",        title: "Raid: quad",                                    category: "raid",       start: d("2026-05-17","14:00"), end: d("2026-05-22","14:00"), description: "Multi-day quad raid challenge." },
-  { id: "ci-1",             title: "Weekly Check-In May Piscine",                   category: "checkin",    start: d("2026-05-18","10:00"), end: d("2026-05-18","11:00") },
-  { id: "explore-marie",    title: "grit:explore — Mariehamn Guided Walking Tour",  category: "explore",    start: d("2026-05-18","14:00"), end: d("2026-05-18","16:00"), location: "Mariehamn" },
-  { id: "cp-1",             title: "Checkpoint 01",                                 category: "checkpoint", start: d("2026-05-19","12:00"), end: d("2026-05-19","16:00") },
-  { id: "audits-1",         title: "Raid audits",                                   category: "audits",     start: d("2026-05-20","09:00"), end: d("2026-05-20","17:00") },
   { id: "play-dance",       title: "grit:play — Dance with Caro",                   category: "play",       start: d("2026-05-21","09:00"), end: d("2026-05-21","10:00") },
   { id: "fika-bingo",       title: "Friday Fika goes Bingo",                        category: "fika",       start: d("2026-05-22","14:00"), end: d("2026-05-22","14:45") },
   { id: "explore-aland",    title: "grit:explore — Discover Åland Guided Bus Tour", category: "explore",    start: d("2026-05-23","13:00"), end: d("2026-05-23","17:00"), location: "Åland" },
