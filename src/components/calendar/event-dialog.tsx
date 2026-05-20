@@ -5,7 +5,9 @@ import { toneFor } from "./category";
 export function EventDialog({ event, onClose }: { event: CalEvent | null; onClose: () => void }) {
   useEffect(() => {
     if (!event) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [event, onClose]);
@@ -15,8 +17,18 @@ export function EventDialog({ event, onClose }: { event: CalEvent | null; onClos
   const t = toneFor(event.category);
   const start = new Date(event.start);
   const end = new Date(event.end);
-  const dateStr = start.toLocaleDateString("en", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  const endDateStr = end.toLocaleDateString("en", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  const dateStr = start.toLocaleDateString("en", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const endDateStr = end.toLocaleDateString("en", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
     <div
@@ -30,7 +42,9 @@ export function EventDialog({ event, onClose }: { event: CalEvent | null; onClos
         className="w-full max-w-lg rounded-2xl bg-card shadow-2xl overflow-hidden border animate-in zoom-in-95"
       >
         <div className={`${t.soft} px-6 pt-6 pb-5`}>
-          <div className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${t.text}`}>
+          <div
+            className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${t.text}`}
+          >
             <span className={`size-1.5 rounded-full ${t.dot}`} /> {meta.label}
           </div>
           <h3 className="mt-2 font-display text-2xl flex items-start gap-2">
@@ -44,9 +58,15 @@ export function EventDialog({ event, onClose }: { event: CalEvent | null; onClos
             <span className="text-muted-foreground w-20 shrink-0">When</span>
             <span>
               {isMultiDay(event) ? (
-                <>{dateStr} <span className="text-muted-foreground">→</span> {endDateStr}</>
+                <>
+                  {dateStr} <span className="text-muted-foreground">→</span> {endDateStr}
+                </>
               ) : (
-                <>{dateStr}<br /><span className="text-muted-foreground">{formatTimeRange(event)}</span></>
+                <>
+                  {dateStr}
+                  <br />
+                  <span className="text-muted-foreground">{formatTimeRange(event)}</span>
+                </>
               )}
             </span>
           </div>
@@ -68,7 +88,9 @@ export function EventDialog({ event, onClose }: { event: CalEvent | null; onClos
           <button
             onClick={onClose}
             className="rounded-full bg-foreground text-background px-4 py-2 text-sm font-medium hover:opacity-90"
-          >Close</button>
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>

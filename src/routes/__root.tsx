@@ -80,8 +80,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "grit:calendar" },
       { property: "og:description", content: "A friendlier calendar for grit:lab events." },
       { name: "twitter:description", content: "A friendlier calendar for grit:lab events." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e32cc2b5-72d8-4492-9271-e63db09dbc23/id-preview-50b6148e--ef9dffce-d46b-442f-a386-8a37ee48d6f4.lovable.app-1779133910538.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e32cc2b5-72d8-4492-9271-e63db09dbc23/id-preview-50b6148e--ef9dffce-d46b-442f-a386-8a37ee48d6f4.lovable.app-1779133910538.png" },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e32cc2b5-72d8-4492-9271-e63db09dbc23/id-preview-50b6148e--ef9dffce-d46b-442f-a386-8a37ee48d6f4.lovable.app-1779133910538.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e32cc2b5-72d8-4492-9271-e63db09dbc23/id-preview-50b6148e--ef9dffce-d46b-442f-a386-8a37ee48d6f4.lovable.app-1779133910538.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
